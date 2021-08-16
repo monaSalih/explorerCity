@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import  Form  from 'react-bootstrap/Form';
- import Modal from 'react-bootstrap/Modal';
+ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button' 
 
 
@@ -13,6 +13,11 @@ constructor(props){
 cityInfo:{},
 distanceName:'',
 rendTnfo: false,
+cityMap:false,
+showError:false,
+/////for API
+// contrName:'',
+// contArr:{}
   }
 }
 
@@ -28,25 +33,34 @@ event.preventDefault();
     })
 
     console.log(this.state.distanceName);
+
     let locQi=`https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_KEY}&q=${this.state.distanceName}&format=json`
 console.log(locQi);
-    let resultQi=await axios.get(locQi);
+try
+   { let resultQi=await axios.get(locQi);
+
 
     console.log(this.state.distanceName);
     form.reset();
     this.setState({
       cityInfo:resultQi.data[0],
       rendInfo:true,
+      cityMap:true
     })
+  } catch{
+      this.setState({
+        showError:true
+      })
+  }
   }
 
 
   // handleClose
-  handleClose = () => {
-    this.setState({
-        showModel: false
-    })
-}
+//   handleClose = () => {
+//     this.setState({
+//         showModel: false
+//     })
+// }
 
   render() {
     return (
@@ -66,47 +80,31 @@ console.log(locQi);
                
 
 {/* render result in modal */}
- <Modal show={this.state.showModal} onHide={this.handleClose}>
-                
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  
-                    <p> {
-                  this.state.rendTnfo && 
-                  <p> 
-                    {
-                      this.state.distanceName
-                    }
-                   Lat: {
-                      this.state.cityInfo
-                    }/Lan
-                    {
-                      this.state.cityInfo
-                    }
-
-                  </p>
-                }</p>
-                   
-                {/* new TestBranch */}
-            
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => this.props.handleclose}>
-                        Close
-                    </Button>
-                
-                </Modal.Footer>
-            </Modal> 
- 
+   
+ {this.state.rendInfo &&
+ <p>
+City name : {this.state.distanceName}
+City Lat: { this.state.cityInfo.lat}
+City /Lan: {this.state.cityInfo.lan}
+ </p>
+}
+{this.state.cityMap &&
+<p>
+  <Image 
+          src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_KEY}&center=${ this.state.cityInfo.lat},${this.state.cityInfo.lan}`}
 
 
+ />
+  </p>}
+{this.state.showError && 
+<p>someThing faild please try again
+  
+</p>
 
-
-
-
-        </>
+}
+{/* alt={`${this.state.distanceName}`}    */}
+                 
+       </>
       </div>
     )
   }
