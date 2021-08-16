@@ -15,6 +15,7 @@ distanceName:'',
 rendTnfo: false,
 cityMap:false,
 showError:false,
+mapImage:''
 /////for API
 // contrName:'',
 // contArr:{}
@@ -35,7 +36,8 @@ event.preventDefault();
     console.log(this.state.distanceName);
 
     let locQi=`https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_KEY}&q=${this.state.distanceName}&format=json`
-console.log(locQi);
+    let locMap=`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_KEY}&center=${ this.state.cityInfo.lat},${this.state.cityInfo.lan}`
+    console.log(locQi);
 try
    { let resultQi=await axios.get(locQi);
 
@@ -45,14 +47,18 @@ try
     this.setState({
       cityInfo:resultQi.data[0],
       rendInfo:true,
-      cityMap:true
+      cityMap:true, 
+      mapImage:locMap
+      
     })
   } catch{
       this.setState({
         showError:true
       })
   }
-  }
+  };
+  
+  
 
 
   // handleClose
@@ -91,10 +97,7 @@ City /Lan: {this.state.cityInfo.lan}
 {this.state.cityMap &&
 <p>
   <Image 
-          src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_KEY}&center=${ this.state.cityInfo.lat},${this.state.cityInfo.lan}`}
-
-
- />
+          src={this.state.mapImage} />
   </p>}
 {this.state.showError && 
 <p>someThing faild please try again
