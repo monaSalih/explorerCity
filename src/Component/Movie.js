@@ -1,7 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import  Card  from 'react-bootstrap/Card';
-import { CardImg } from 'react-bootstrap';
+// import { CardImg } from 'react-bootstrap';
 
 
  class Movie extends React.Component {
