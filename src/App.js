@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button'
 import Movie from './Component/Movie';
-
+import Weather from './Component/Weather';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -120,21 +120,19 @@ class App extends React.Component {
 
 
             <>
-              today date:{this.state.weatherState.valid_date}
-              maximume tepmresure:{this.state.weatherState.app_max_temp}
-              minemue tepmresure:{this.state.weatherState.app_min_temp}
-{console.log(this.state.movieInfoArray)}
+           
              
-             {this.state.movieInfoArray.map(item=>{
-return(      <Movie 
-
-  resultImg={item.moviePoster}
-  titleResul={item.movImage}
-
-/>)
+         <Weather
+                weatherData={this.state.weatherState}
           
-             })
-             }
+             
+
+/>
+             
+
+             
+             
+               <Movie   resultStore={this.state.movieInfoArray}/>
 
             </>
 
